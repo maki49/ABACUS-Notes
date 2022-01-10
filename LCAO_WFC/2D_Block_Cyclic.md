@@ -1,8 +1,8 @@
 <font face="Comic Sans MS">
 
 ## Background
-在局域轨道基组下并行计算时，密度矩阵（density matrix）有两种分法：
-- 按轨道分成2D块：为方便对角化解KS方程？
+在局域轨道基组下并行计算时，H，S，density matrix等(nbasis*nbasis)矩阵有两种分法：
+- 按轨道（basis）分成2D块：用于对角化求解KS本征值方程
 - 按格点分：用于格点积分，通过density matrix求解charge density
 
 ## Method
@@ -42,7 +42,7 @@
     - 行对应行，列对应列
 
 ![pic3](#./pic/2D3.png "1D-block-cyclic")
-![pic4](#./pic/2D4.png  "2D-block-cyclic")
+![pic4](#./pic/2D4.png "2D-block-cyclic")
 
 4对应于ABACUS中`DSIZE=1`的情况。
 
