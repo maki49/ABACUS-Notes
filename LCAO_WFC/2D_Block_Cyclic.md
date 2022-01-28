@@ -22,13 +22,14 @@
 （内存连续）
     - 缺点：不利于负载平衡，第一个连续的block算完后，process 0 空闲了
 
+![pic1](./pic/2D1.png#pic_center "1D-block")
+
 2. 1D 列循环
     - 第k列 被分到进程 $((k-1) \mod p)$
     - 解决负载平衡，但因为矩阵被切成列向量分在了不同进程，无法做Level 2,3 BLAS
 
-![pic1](#./pic/2D1.png "1D-block")
 
-![pic2](#./pic/2D2.png "1D-col-cyclic")
+![pic2](./pic/2D2.png#pic_center "1D-col-cyclic")
 
 3. 1D 块循环
     - block size: NB
@@ -36,20 +37,21 @@
     - 1, 2 中的分法分别对应NB=4和NB=1的特例
     - Serial bottleneck: 列块的BLAS算法在同一个处理器上进行，而这部分其实也可以并行处理——切割行。
 
+![pic3](./pic/2D3.png "1D-block-cyclic")
+
 4. 2D 块循环
     - P个进程视为 $P_r\times P_c$的逻辑结构，它们的index为 $(p_r, p_c)$ (对应ABACUS中的coord[0], coord[1])
     - 矩阵切成MB*NB的2D块，图中MB=NB=2
     - 行对应行，列对应列
+    
+![pic4](./pic/2D4.png  "2D-block-cyclic")
 
-![pic3](#./pic/2D3.png "1D-block-cyclic")
-![pic4](#./pic/2D4.png  "2D-block-cyclic")
+4对应于ABACUS中**DSIZE=总进程数**的情况。
 
-4对应于ABACUS中`DSIZE=1`的情况。
-
-问题：如果`DSIZE`大于1呢?
+问题：如果`DSIZE`小于总进程数呢?
 - "进程2D块"，ABACUS中dim0, dim1是“进程2D块”的大小，根据DSIZE算出
 - comm_2D $\subsetneqq$ DIAG_WORLD
-- 尝试一下
+
 ## Code
 ### `class Parallel_Orbitals : Pdiag_Double : Pdiag_Basic`
 - divide_HS_2d
